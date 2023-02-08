@@ -16,8 +16,8 @@
 
 	typedef struct {
         #define MAP_MAX 128
-		PairValue* data[MAP_MAX]; //unsanitize data type can lead to injection,
-	} HashMap;                    //affecting confidentaility, integrity and availability
+		PairValue* data[MAP_MAX]; //unsanitize data type and lack of input validation can lead 
+	} HashMap;                    //to injection, affecting confidentaility, integrity and availability
 
     HashMap* HashInit();
     void HashAdd(HashMap *map, PairValue *value); // lack of Error handling, affecting confidentiality
