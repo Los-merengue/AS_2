@@ -32,7 +32,11 @@ unsigned HashIndex(const char* key) {
  * This function is not initialized and this can result to access of
  * uninitialized memory
 */
-
+/*
+This HahInit function also comes with a potential data corruption flaw,
+since it carries an unintialized malloc function. This would affect
+data integrity.
+*/
 HashMap* HashInit() {               
 	return malloc(sizeof(HashMap));   
 }
