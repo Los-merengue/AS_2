@@ -3,6 +3,7 @@
 * @Name : hash.c fixed code
 *
 **/
+
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,14 +19,14 @@
  * giving a good distribution of the created keys.
 */
 
+
 unsigned HashIndex(const char* key) {
-    unsigned hash = 5381;
-    int c;
-
-    while ((c = *key++))
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash;
+    unsigned sum = 0;
+    size_t len = strlen(key);
+    for (size_t i = 0; i < len; i++) {
+        sum += key[i];
+    }
+    return sum;
 }
 
 /**
@@ -35,9 +36,14 @@ unsigned HashIndex(const char* key) {
  * 
 */
 
-HashMap* HashInit() {               
-	return malloc(sizeof(HashMap));
-    free()   
+HashMap* HashInit() {
+    HashMap *map = malloc(sizeof(HashMap));
+    if (map == NULL) {
+        perror("malloc");
+        return NULL;
+    }
+    memset(map->data, 0, sizeof(map->data));
+    return map;
 }
 
 /**
@@ -49,11 +55,12 @@ HashMap* HashInit() {
  * 
 */
 
-unsigned idx = HashIndex(value->KeyName) % MAP_MAX;  // Use modulo operator to ensure index stays within bounds
+void HashAdd(HashMap *map, PairValue *value) {
+    unsigned idx = HashIndex(value->KeyName) % MAP_MAX;
 
-if (map->data[idx]) 
-    value->Next = map->data[idx];  // Avoid overwriting the linked list and losing data
-map->data[idx] = value;
+    value->Next = map->data[idx];
+    map->data[idx] = value;	
+}
 
 /**
  * The previous code had a classical buffer overflow vulnerability, whihc
@@ -65,10 +72,10 @@ map->data[idx] = value;
 */
 
 PairValue* HashFind(HashMap *map, const char* key) {
-    unsigned idx = HashIndex(key);
+    unsigned idx = HashIndex(key) % MAP_MAX;
     
-    for( PairValue* val = map->data[idx]; val != NULL; val = val->Next ) {
-        if (strncmp(val->KeyName, key, KEY_STRING_MAX) == 0)
+    for (PairValue *val = map->data[idx]; val != NULL; val = val->Next) {
+        if (strcmp(val->KeyName, key) == 0)
             return val;
     }
     
@@ -83,14 +90,17 @@ PairValue* HashFind(HashMap *map, const char* key) {
 */
 
 void HashDelete(HashMap *map, const char* key) {
-    unsigned idx = HashIndex(key);
+    unsigned idx = HashIndex(key) % MAP_MAX;
     
-    for( PairValue* val = map->data[idx], *prev = NULL; val != NULL; prev = val, val = val->Next ) {
+    for (PairValue *val = map->data[idx], *prev = NULL; val != NULL; prev = val, val = val->Next) {
         if (strcmp(val->KeyName, key) == 0) {
-            if (prev)
+            if (prev) {
                 prev->Next = val->Next;
-            else
+            } else {
                 map->data[idx] = val->Next;
+            }
+            free(val);
+            break;
         }
     }
 }
@@ -103,9 +113,9 @@ void HashDelete(HashMap *map, const char* key) {
 */
 
 void HashDump(HashMap *map) {
-    for( unsigned i = 0; i < MAP_MAX; i++ ) {
-        for( PairValue* val = map->data[i]; val != NULL; val = val->Next ) {
-            printf("%s", val->KeyName);
+    for (unsigned i = 0; i < MAP_MAX; i++) {
+        for (PairValue *val = map->data[i]; val != NULL; val = val->Next) {
+            printf("%s\n", val->KeyName);
         }
     }
 }
