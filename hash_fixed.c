@@ -74,3 +74,23 @@ PairValue* HashFind(HashMap *map, const char* key) {
     
     return NULL; 
 }
+
+/**
+ * Just like the fix in the previous block of code, this block will be 
+ * vulnerable to classical buffer overflow because of the 'strcpy' function.
+ * We will curb this problem by using the 'strcmp' instead. This new 
+ * 'strcmp' function will compare two string for equality and return 0.
+*/
+
+void HashDelete(HashMap *map, const char* key) {
+    unsigned idx = HashIndex(key);
+    
+    for( PairValue* val = map->data[idx], *prev = NULL; val != NULL; prev = val, val = val->Next ) {
+        if (strcmp(val->KeyName, key) == 0) {
+            if (prev)
+                prev->Next = val->Next;
+            else
+                map->data[idx] = val->Next;
+        }
+    }
+}
