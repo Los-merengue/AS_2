@@ -102,9 +102,9 @@ void HashDelete(HashMap *map, const char* key) {
 
 /**
  * Looking at the HashDump function below, a printf prompt will be used
- * to output some set of strings, and the amount of data this string
+ * to output some set of strings, and the format of data this string
  * can output is not stated. This has the potential of causing buffer
- * overflow, which can also affect configentiality, availability and
+ * overflow, which can also affect confidentiality, availability and
  * Intergrity.
 */
 

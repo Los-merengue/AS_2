@@ -94,3 +94,18 @@ void HashDelete(HashMap *map, const char* key) {
         }
     }
 }
+
+/**
+ * The previous code is susceptible to some string formatting attack or 
+ * some form of buffer overflow. To fix this vulnerabilty we will format
+ * the string appropriately so as to make sure the right format is 
+ * being parse
+*/
+
+void HashDump(HashMap *map) {
+    for( unsigned i = 0; i < MAP_MAX; i++ ) {
+        for( PairValue* val = map->data[i]; val != NULL; val = val->Next ) {
+            printf("%s", val->KeyName);
+        }
+    }
+}
