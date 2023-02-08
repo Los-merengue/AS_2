@@ -26,9 +26,9 @@
     HashMap* HashInit();
     void HashAdd(HashMap *map, PairValue *value); 
     void HashDelete(HashMap *map, const char* key); 
-    void PairValue* HashFind(char *map, const char *key, size_t 255) {
-        strncpy(key, map, 255-1);
-        dest[255-1] = '\0';
+    void PairValue* HashFind(char *map, const char *key, size_t 255) { //Sanitize
+        strncpy(key, map, 255-1); //the input of data that goes into this code block
+        dest[255-1] = '\0';       //Ensuring maximum size.
     }
     void HashDump(HashMap *map);
 #endif
