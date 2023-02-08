@@ -40,3 +40,37 @@ HashMap* HashInit() {
     free()   
 }
 
+/**
+ * The previous HashIndex function can cause buffer overflow. This code
+ * referenced below can restrict the vulnerabilty by using the modulo 
+ * (% MAP_MAX) operator to ensure the index stays within bounds. 
+ * Consequently, we should ensure the conditionals statement is written
+ * in a way to ensure prevention of loosing data.
+ * 
+*/
+
+unsigned idx = HashIndex(value->KeyName) % MAP_MAX;  // Use modulo operator to ensure index stays within bounds
+
+if (map->data[idx]) 
+    value->Next = map->data[idx];  // Avoid overwriting the linked list and losing data
+map->data[idx] = value;
+
+/**
+ * The previous code had a classical buffer overflow vulnerability, whihc
+ * was introduced by the function used to compare the string 'strcpy'.
+ * We will fix this by using the 'strncmp' function, because this function
+ * will copy n amount of characters and ensure that it returns NULL
+ * termination. This will dynamically work on the buffer and nullify any 
+ * potential overflow that may happen
+*/
+
+PairValue* HashFind(HashMap *map, const char* key) {
+    unsigned idx = HashIndex(key);
+    
+    for( PairValue* val = map->data[idx]; val != NULL; val = val->Next ) {
+        if (strncmp(val->KeyName, key, KEY_STRING_MAX) == 0)
+            return val;
+    }
+    
+    return NULL; 
+}
