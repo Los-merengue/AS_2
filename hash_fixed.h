@@ -11,16 +11,16 @@
 #ifndef __HASH__
 #define __HASH__
 
-    typedef struct {
-        #define KEY_STRING_MAX 255
+    typedef struct {               //Vulnerability will depend on how the 
+        #define KEY_STRING_MAX 255 //function here is implemented.
 		char KeyName[KEY_STRING_MAX];
 		int  ValueCount;               
         struct PairValue* Next;        
 	} PairValue;
 
-	typedef struct {
-        #define MAP_MAX 128
-		PairValue* data[MAP_MAX];
+	typedef struct {        //Similarly no vulnerabilities exist here but they can
+        #define MAP_MAX 128 // become vulnerable depending on how the 
+		PairValue* data[MAP_MAX]; //function is implemented
 	} HashMap;                    
 
     HashMap* HashInit();
