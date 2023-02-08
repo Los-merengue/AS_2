@@ -4,6 +4,7 @@
 * This is a header file for the hash.c file, it contains some macro
 * definition of the functions in the c program.
 **/
+
 #ifndef __HASH__
 #define __HASH__
 
