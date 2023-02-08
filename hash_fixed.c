@@ -44,6 +44,7 @@ HashMap* HashInit() {
     }
     memset(map->data, 0, sizeof(map->data));
     return map;
+    free();
 }
 
 /**

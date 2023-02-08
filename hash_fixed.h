@@ -4,7 +4,7 @@
 * This is the fixed to the vulnerable header file for c
 **/
 
-#ifndef __HASH__
+#define __HASH__
 #define __HASH__
 
 

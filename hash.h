@@ -5,7 +5,7 @@
 * definition of the functions in the c program.
 **/
 
-#ifndef __HASH__
+#define __HASH__
 #define __HASH__
 
     typedef struct {
