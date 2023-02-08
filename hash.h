@@ -25,4 +25,3 @@
     void HashDelete(HashMap *map, const char* key); // Inappropriate Data handling, leading to memory leaks and affecting integrity
     PairValue* HashFind(HashMap *map, const char* key); //Potential buffer overflow
     void HashDump(HashMap *map);
-#endif
